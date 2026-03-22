@@ -1,0 +1,952 @@
+{
+  "info": {
+    "_postman_id": "cinereserve-api-collection",
+    "name": "CineReserve API",
+    "description": "Documentação completa da API CineReserve - Sistema de Reservas de Cinema",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12345"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Autenticação",
+      "item": [
+        {
+          "name": "Registrar Novo Usuário",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"seu_usuario\",\n  \"email\": \"seu_email@example.com\",\n  \"password\": \"sua_senha_segura\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/register/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register",
+                ""
+              ]
+            },
+            "description": "Registra um novo usuário no sistema. Retorna os dados do usuário criado."
+          },
+          "response": [
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"cliente1\",\n  \"email\": \"cliente1@example.com\",\n  \"password\": \"senha123\"\n}"
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/auth/register/",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "auth",
+                    "register",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [],
+              "body": "{\n  \"id\": 2,\n  \"username\": \"cliente1\",\n  \"email\": \"cliente1@example.com\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Login (Obter Token JWT)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"seu_usuario\",\n  \"password\": \"sua_senha\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login",
+                ""
+              ]
+            },
+            "description": "Faz login e retorna access_token e refresh_token. Salve o access_token na variável {{access_token}} para usar em outras requisições."
+          },
+          "response": [
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"Admin@12345\"\n}"
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/auth/login/",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "auth",
+                    "login",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"access\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...\",\n  \"refresh\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Renovar Token (Refresh)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/refresh/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "refresh",
+                ""
+              ]
+            },
+            "description": "Usa o refresh_token para obter um novo access_token. Use quando o access_token expirar."
+          },
+          "response": [
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"refresh\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...\"\n}"
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/auth/refresh/",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "auth",
+                    "refresh",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"access\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...\"\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Filmes",
+      "item": [
+        {
+          "name": "Listar Todos os Filmes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/filmes/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "filmes",
+                ""
+              ]
+            },
+            "description": "Lista todos os filmes disponíveis. Paginação automática em grupos de 10 itens."
+          },
+          "response": [
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/filmes/",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "filmes",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"count\": 1,\n  \"next\": null,\n  \"previous\": null,\n  \"results\": [\n    {\n      \"id\": 1,\n      \"titulo\": \"Filme Teste\",\n      \"duracao\": 120,\n      \"em_cartaz\": true\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Criar Novo Filme",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Avatar 3\",\n  \"duracao\": 180,\n  \"em_cartaz\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/filmes/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "filmes",
+                ""
+              ]
+            },
+            "description": "Cria um novo filme (requer autenticação e permissão de staff). Duração em minutos."
+          },
+          "response": [
+            {
+              "name": "Criado com Sucesso",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"titulo\": \"Avatar 3\",\n  \"duracao\": 180,\n  \"em_cartaz\": true\n}"
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/filmes/",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "filmes",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [],
+              "body": "{\n  \"id\": 2,\n  \"titulo\": \"Avatar 3\",\n  \"duracao\": 180,\n  \"em_cartaz\": true\n}"
+            }
+          ]
+        },
+        {
+          "name": "Obter Detalhes do Filme",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/filmes/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "filmes",
+                "1",
+                ""
+              ]
+            },
+            "description": "Obtém detalhes completos de um filme específico."
+          }
+        },
+        {
+          "name": "Atualizar Filme",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"em_cartaz\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/filmes/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "filmes",
+                "1",
+                ""
+              ]
+            },
+            "description": "Atualiza parcialmente um filme (requer autenticação e permissão de staff)."
+          }
+        },
+        {
+          "name": "Deletar Filme",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/filmes/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "filmes",
+                "1",
+                ""
+              ]
+            },
+            "description": "Deleta um filme (requer autenticação e permissão de staff)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Salas",
+      "item": [
+        {
+          "name": "Listar Todas as Salas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/salas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "salas",
+                ""
+              ]
+            },
+            "description": "Lista todas as salas de cinema disponíveis."
+          }
+        },
+        {
+          "name": "Criar Nova Sala",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Sala IMAX 1\",\n  \"colunas\": 15,\n  \"fileiras\": 12\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/salas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "salas",
+                ""
+              ]
+            },
+            "description": "Cria uma nova sala de cinema (requer autenticação e permissão de staff). Colunas e fileiras determinam a capacidade (padrão: 10x10)."
+          }
+        },
+        {
+          "name": "Obter Detalhes da Sala",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/salas/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "salas",
+                "1",
+                ""
+              ]
+            },
+            "description": "Obtém detalhes completos de uma sala específica."
+          }
+        },
+        {
+          "name": "Atualizar Sala",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"colunas\": 16\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/salas/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "salas",
+                "1",
+                ""
+              ]
+            },
+            "description": "Atualiza parcialmente uma sala (requer autenticação e permissão de staff)."
+          }
+        },
+        {
+          "name": "Deletar Sala",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/salas/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "salas",
+                "1",
+                ""
+              ]
+            },
+            "description": "Deleta uma sala (requer autenticação e permissão de staff)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Sessões",
+      "item": [
+        {
+          "name": "Listar Sessões (com filtro opcional)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/sessoes/?filme=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "sessoes",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "filme",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "Lista sessões de filme disponíveis. Use o query param filme para trazer sessões de um filme específico (ex: ?filme=1)."
+          }
+        },
+        {
+          "name": "Listar Sessões de um Filme",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/filmes/2/sessoes/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "filmes",
+                "2",
+                "sessoes",
+                ""
+              ]
+            },
+            "description": "Retorna todas as sessões do filme informado no caminho (ex: filme 2), ordenadas por horario_inicio."
+          },
+          "response": [
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/filmes/2/sessoes/",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "filmes",
+                    "2",
+                    "sessoes",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "[\n  {\n    \"id\": 3,\n    \"sala\": 3,\n    \"sala_nome\": \"Sala IMAX 1\",\n    \"filme\": 2,\n    \"filme_titulo\": \"Avatar 3\",\n    \"assentos_disponiveis\": 180,\n    \"horario_inicio\": \"2026-03-22T19:00:00Z\"\n  },\n  {\n    \"id\": 4,\n    \"sala\": 3,\n    \"sala_nome\": \"Sala IMAX 1\",\n    \"filme\": 2,\n    \"filme_titulo\": \"Avatar 3\",\n    \"assentos_disponiveis\": 180,\n    \"horario_inicio\": \"2026-03-22T21:00:00Z\"\n  }\n]"
+            }
+          ]
+        },
+        {
+          "name": "Criar Nova Sessão",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filme\": 1,\n  \"sala\": 1,\n  \"horario_inicio\": \"2026-03-25T19:30:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/sessoes/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "sessoes",
+                ""
+              ]
+            },
+            "description": "Cria uma nova sessão de filme em uma sala (requer autenticação e permissão de staff). Horário em formato ISO 8601 (UTC)."
+          }
+        },
+        {
+          "name": "Obter Detalhes da Sessão",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/sessoes/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "sessoes",
+                "1",
+                ""
+              ]
+            },
+            "description": "Obtém detalhes completos de uma sessão específica."
+          }
+        },
+        {
+          "name": "Assentos Ocupados da Sessão",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/sessoes/1/assentos_ocupados/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "sessoes",
+                "1",
+                "assentos_ocupados",
+                ""
+              ]
+            },
+            "description": "Retorna lista de assentos ocupados em uma sessão (fileira + coluna). Útil para mostrar mapa de assentos disponíveis."
+          },
+          "response": [
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/sessoes/1/assentos_ocupados/",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "sessoes",
+                    "1",
+                    "assentos_ocupados",
+                    ""
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"sessao\": 1,\n  \"assentos_ocupados\": [\n    {\n      \"fileira\": \"A\",\n      \"coluna\": 1\n    },\n    {\n      \"fileira\": \"A\",\n      \"coluna\": 2\n    }\n  ],\n  \"total_ocupados\": 2\n}"
+            }
+          ]
+        },
+        {
+          "name": "Atualizar Sessão",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"horario_inicio\": \"2026-03-25T20:00:00Z\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/sessoes/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "sessoes",
+                "1",
+                ""
+              ]
+            },
+            "description": "Atualiza parcialmente uma sessão (requer autenticação e permissão de staff)."
+          }
+        },
+        {
+          "name": "Deletar Sessão",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/sessoes/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "sessoes",
+                "1",
+                ""
+              ]
+            },
+            "description": "Deleta uma sessão (requer autenticação e permissão de staff)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reservas de Assentos",
+      "item": [
+        {
+          "name": "Listar Minhas Reservas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/reservas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "reservas",
+                ""
+              ]
+            },
+            "description": "Lista as reservas do usuário autenticado. Usuários comuns veem apenas suas próprias reservas. Staff vê todas as reservas."
+          }
+        },
+        {
+          "name": "Criar Nova Reserva",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sessao\": 1,\n  \"fileira\": \"A\",\n  \"coluna\": 5\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/reservas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "reservas",
+                ""
+              ]
+            },
+            "description": "Cria uma nova reserva de assento (requer autenticação). Fileira é letra (A-Z), coluna é número (1-N). Validação automática impede:\n- Assentos duplicados\n- Fileiras inválidas\n- Colunas fora do intervalo"
+          },
+          "response": [
+            {
+              "name": "Sucesso",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessao\": 1,\n  \"fileira\": \"A\",\n  \"coluna\": 5\n}"
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/reservas/",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "reservas",
+                    ""
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [],
+              "body": "{\n  \"id\": 1,\n  \"usuario\": 2,\n  \"sessao\": 1,\n  \"fileira\": \"A\",\n  \"coluna\": 5,\n  \"status\": \"R\",\n  \"data_reserva\": \"2026-03-22T15:30:00Z\"\n}"
+            },
+            {
+              "name": "Erro - Assento Duplicado",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"sessao\": 1,\n  \"fileira\": \"A\",\n  \"coluna\": 5\n}"
+                },
+                "url": {
+                  "raw": "http://127.0.0.1:8000/api/reservas/",
+                  "protocol": "http",
+                  "host": [
+                    "127",
+                    "0",
+                    "0",
+                    "1"
+                  ],
+                  "port": "8000",
+                  "path": [
+                    "api",
+                    "reservas",
+                    ""
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [],
+              "body": "{\n  \"non_field_errors\": [\n    \"Este assento já foi reservado.\"\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Obter Detalhes da Reserva",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/reservas/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "reservas",
+                "1",
+                ""
+              ]
+            },
+            "description": "Obtém detalhes completos de uma reserva específica (apenas o dono ou staff podem visualizar)."
+          }
+        },
+        {
+          "name": "Atualizar Status da Reserva",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"P\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/reservas/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "reservas",
+                "1",
+                ""
+              ]
+            },
+            "description": "Atualiza o status da reserva. Status: R (Reservado), P (Usado/Presente). Apenas o dono ou staff podem atualizar."
+          }
+        },
+        {
+          "name": "Cancelar Reserva",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/reservas/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "reservas",
+                "1",
+                ""
+              ]
+            },
+            "description": "Deleta/cancela uma reserva (apenas o dono ou staff podem cancelar)."
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refresh_token",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

@@ -19,6 +19,9 @@ class SessaoSerializer(serializers.ModelSerializer):
 
     filme_titulo = serializers.ReadOnlyField(source='filme.titulo')
     sala_nome = serializers.ReadOnlyField(source='sala.nome')
+
+    sala_colunas = serializers.ReadOnlyField(source='sala.colunas')
+    sala_fileiras = serializers.ReadOnlyField(source='sala.fileiras')
     
     class Meta:
         model = Sessao
@@ -28,7 +31,9 @@ class SessaoSerializer(serializers.ModelSerializer):
                   'filme',
                  'filme_titulo',
                  'assentos_disponiveis',
-                  'horario_inicio'
+                  'horario_inicio',
+                    'sala_colunas',
+                    'sala_fileiras',
                   ]
 
 class AssentoReservadoSerializer(serializers.ModelSerializer):
