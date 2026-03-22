@@ -1,0 +1,8 @@
+# Mantém apenas o básico para ignorar
+__pycache__/
+*.py[cod]
+.git
+.venv
+venv/
+.env
+db.sqlite3
