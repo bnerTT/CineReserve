@@ -13,44 +13,42 @@ class Filme(models.Model):
     
 class Sala(models.Model):
     nome = models.CharField(max_length=50)
+    colunas = models.PositiveIntegerField(default=10)
+    fileiras = models.PositiveIntegerField(default=10)
 
     def __str__(self):
         return self.nome
-    
-class Assento(models.Model):
-    sala = models.ForeignKey(Sala, on_delete=models.CASCADE)
-    fileira = models.CharField(max_length=5)
-    numero = models.CharField(max_length=5)
 
-    class Meta:
-        unique_together = ('sala', 'fileira', 'numero')
-
-    def __str__(self):
-        return f"{self.sala.nome} - {self.fileira}{self.numero}"
-    
 class Sessao(models.Model):
-    filme = models.ForeignKey(Filme, on_delete=models.CASCADE, related_name='sessoes')
     sala = models.ForeignKey(Sala, on_delete=models.CASCADE)
+    filme = models.ForeignKey(Filme, on_delete=models.CASCADE, related_name='sessoes')
     horario_inicio = models.DateTimeField()
+
+    @property
+    def assentos_disponiveis(self):
+        return (self.sala.colunas * self.sala.fileiras) - self.reservas.count()
 
     def __str__(self):
         return f"{self.filme.titulo} - {self.sala.nome} - {self.horario_inicio}"
     
-class Reserva(models.Model):
+
+class AssentoReservado(models.Model):
+
     STATUS_CHOICES = (
         ('R', 'Reservado'),
-        ('F', 'Fechado'),
-        ('D', 'Disponivel'),
+        ('P', 'Pago')
     )
-    
+
+    sessao = models.ForeignKey(Sessao, related_name='reservas', on_delete=models.CASCADE)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    sessao = models.ForeignKey(Sessao, on_delete=models.CASCADE)
-    assento = models.ForeignKey(Assento, on_delete=models.CASCADE)
-    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='D')
-    criada_em = models.DateTimeField(auto_now_add=True)
+    fileira = models.CharField(max_length=2)
+    coluna = models.PositiveIntegerField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='R')
+    data_reserva = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('sessao', 'assento')
+        unique_together = ('sessao', 'fileira', 'coluna')
 
     def __str__(self):
-        return f"Reserva de {self.usuario.username} para {self.sessao.filme.titulo} - {self.assento}"
+        return f"{self.usuario.username} - {self.sessao.filme.titulo} - Fileira {self.fileira} Coluna {self.coluna} - Status: {self.get_status_display()}"
+    
