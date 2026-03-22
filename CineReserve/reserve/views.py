@@ -19,6 +19,11 @@ class FilmeViewSet(viewsets.ModelViewSet):
     queryset = Filme.objects.all()
     serializer_class = FilmeSerializer
 
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve', 'sessoes']:
+            return [permissions.AllowAny()]
+        return [permissions.IsAdminUser()]
+
     @action(detail=True, methods=['get'])
     def sessoes(self, request, pk=None):
         queryset = Sessao.objects.filter(filme_id=pk).order_by('horario_inicio')
@@ -29,9 +34,19 @@ class SalaViewSet(viewsets.ModelViewSet):
     queryset = Sala.objects.all()
     serializer_class = SalaSerializer
 
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            return [permissions.AllowAny()]
+        return [permissions.IsAdminUser()]
+
 class SessaoViewSet(viewsets.ModelViewSet):
     queryset = Sessao.objects.all()
     serializer_class = SessaoSerializer
+
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve', 'assentos_ocupados']:
+            return [permissions.AllowAny()]
+        return [permissions.IsAdminUser()]
 
     def get_queryset(self):
         queryset = Sessao.objects.all()

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import { apiUrl } from '../config/api';
 
 const CompraIngresso = () => {
   const { sessaoId } = useParams(); // Pega o ID da sessão da URL
@@ -25,12 +26,12 @@ const CompraIngresso = () => {
     const buscarDados = async () => {
       try {
         // 1. Busca os detalhes da sessão (para saber o tamanho da sala)
-        const respSessao = await fetch(`http://127.0.0.1:8000/api/sessoes/${sessaoId}/`);
+        const respSessao = await fetch(apiUrl(`/api/sessoes/${sessaoId}/`));
         const dadosSessao = await respSessao.json();
         setDadosSessao(dadosSessao);
 
         // 2. Busca a lista de assentos ocupados
-        const respOcupados = await fetch(`http://127.0.0.1:8000/api/sessoes/${sessaoId}/assentos_ocupados/`);
+        const respOcupados = await fetch(apiUrl(`/api/sessoes/${sessaoId}/assentos_ocupados/`));
         const dadosOcupados = await respOcupados.json();
         // Baseado no seu Postman, a API retorna um objeto com 'assentos_ocupados' dentro
         setAssentosOcupados(dadosOcupados.assentos_ocupados || []);
@@ -58,7 +59,7 @@ const CompraIngresso = () => {
     setMensagem('Processando...');
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/reservas/', {
+      const response = await fetch(apiUrl('/api/reservas/'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

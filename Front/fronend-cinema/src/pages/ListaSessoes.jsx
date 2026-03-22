@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { apiUrl } from '../config/api';
 
 const ListaSessoes = () => {
   // Pega o ID do filme que está na URL
@@ -10,7 +11,7 @@ const ListaSessoes = () => {
   useEffect(() => {
     const buscarSessoes = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/filmes/${filmeId}/sessoes/`);
+        const response = await fetch(apiUrl(`/api/filmes/${filmeId}/sessoes/`));
         const data = await response.json();
         setSessoes(data);
       } catch (error) {

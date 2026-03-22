@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { apiUrl } from '../config/api';
 
 const Home = () => {
   const [filmes, setFilmes] = useState([]);
@@ -8,7 +9,7 @@ const Home = () => {
   useEffect(() => {
     const buscarFilmes = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/filmes/');
+        const response = await fetch(apiUrl('/api/filmes/'));
         const data = await response.json();
         
         // O Django REST geralmente pagina os resultados (colocando-os dentro de 'results')
