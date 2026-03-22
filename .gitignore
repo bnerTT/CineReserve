@@ -31,3 +31,8 @@ media/
 
 
 *.log
+
+CineReserve.postman_collection.json
+CineReserve.postman_environment.json
+
+.gitignore 
